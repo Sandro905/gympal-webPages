@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,28 +8,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --green: #4CAF7D;
-    --green-dim: #1a3a28;
-    --green-border: #2d5a3d;
-    --green-text: #3a9e6e;
-    --bg: #0e0e0e;
-    --bg-2: #151515;
-    --bg-3: #1a1a1a;
-    --bg-4: #1f1f1f;
-    --border: #232323;
-    --border-2: #2a2a2a;
-    --text-primary: #f0f0f0;
-    --text-secondary: #888;
-    --text-muted: #444;
-    --amber: #EF9F27;
-    --amber-dim: #2a1f0a;
-    --amber-border: #4a3510;
-    --blue: #6699dd;
-    --blue-dim: #1a1f2a;
-    --blue-border: #2a3550;
-    --purple: #9f8fef;
-    --purple-dim: #1e1a30;
-    --purple-border: #332a50;
+    --green: #4CAF7D; --green-dim: #1a3a28; --green-border: #2d5a3d; --green-text: #3a9e6e;
+    --bg: #0e0e0e; --bg-2: #151515; --bg-3: #1a1a1a; --bg-4: #1f1f1f;
+    --border: #232323; --border-2: #2a2a2a;
+    --text-primary: #f0f0f0; --text-secondary: #888; --text-muted: #444;
+    --amber: #EF9F27; --amber-dim: #2a1f0a; --amber-border: #4a3510;
+    --blue: #6699dd; --blue-dim: #1a1f2a; --blue-border: #2a3550;
+    --purple: #9f8fef; --purple-dim: #1e1a30; --purple-border: #332a50;
     --font: 'Plus Jakarta Sans', system-ui, sans-serif;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,16 +24,26 @@
   a:hover { text-decoration: underline; }
   .container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
 
+  /* NAV */
   nav { border-bottom: 1px solid var(--border); background: rgba(14,14,14,0.92); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; max-width: 760px; margin: 0 auto; }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; max-width: 760px; margin: 0 auto; gap: 12px; }
   .nav-logo { display: flex; align-items: center; gap: 10px; }
-  .nav-logo-icon { width: 30px; height: 30px; background: var(--green); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .nav-logo-icon { width: 30px; height: 30px; background: var(--green); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .nav-logo-icon svg { width: 16px; height: 16px; }
   .nav-logo-name { font-size: 16px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.3px; }
-  .nav-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); border-radius: 5px; padding: 2px 7px; }
-  .nav-feedback { font-size: 13px; font-weight: 600; color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); border-radius: 8px; padding: 7px 14px; transition: background .15s; text-decoration: none; }
+  .nav-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); border-radius: 5px; padding: 2px 7px; white-space: nowrap; }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+
+  /* LANG SWITCH */
+  .lang-switch { display: flex; align-items: center; background: var(--bg-3); border: 1px solid var(--border-2); border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+  .lang-btn { font-family: var(--font); font-size: 12px; font-weight: 600; padding: 6px 11px; cursor: pointer; color: var(--text-muted); background: transparent; border: none; transition: color .15s, background .15s; letter-spacing: 0.3px; }
+  .lang-btn.active { color: var(--green); background: var(--green-dim); }
+  .lang-btn:hover:not(.active) { color: var(--text-secondary); }
+
+  .nav-feedback { font-size: 13px; font-weight: 600; color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); border-radius: 8px; padding: 7px 14px; transition: background .15s; text-decoration: none; white-space: nowrap; }
   .nav-feedback:hover { background: #1e3f2e; text-decoration: none; }
 
+  /* HERO */
   .hero { padding: 72px 0 56px; }
   .hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--green-text); background: var(--green-dim); border: 1px solid var(--green-border); border-radius: 20px; padding: 4px 12px; margin-bottom: 22px; }
   .hero-eyebrow-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
@@ -61,6 +56,7 @@
   .meta-item strong { color: var(--text-secondary); font-weight: 600; }
   .meta-dot { width: 3px; height: 3px; background: var(--text-muted); border-radius: 50%; }
 
+  /* VERSION STRIP */
   .version-strip { background: var(--bg-2); border: 1px solid var(--border); border-radius: 14px; padding: 20px 24px; margin-bottom: 64px; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
   .version-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.7px; color: var(--text-muted); margin-bottom: 6px; }
   .version-number { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; color: var(--text-primary); }
@@ -69,39 +65,38 @@
   .version-next-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--amber); background: var(--amber-dim); border: 1px solid var(--amber-border); border-radius: 8px; padding: 5px 12px; }
   .version-next-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px; max-width: 220px; line-height: 1.5; }
 
+  /* SECTIONS */
   .section { margin-bottom: 56px; }
   .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px; margin-bottom: 4px; }
-  .label-green { color: var(--green-text); }
-  .label-blue  { color: var(--blue); }
-  .label-amber { color: var(--amber); }
-  .label-purple{ color: var(--purple); }
+  .label-green  { color: var(--green-text); }
+  .label-blue   { color: var(--blue); }
+  .label-amber  { color: var(--amber); }
+  .label-purple { color: var(--purple); }
   .section-title { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; color: var(--text-primary); }
   .section-desc { font-size: 13px; color: var(--text-muted); margin-top: 3px; line-height: 1.5; margin-bottom: 20px; }
 
+  /* FEATURE CARDS */
   .features { display: flex; flex-direction: column; gap: 2px; }
   .feature { display: flex; align-items: flex-start; gap: 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; transition: border-color .15s, background .15s; }
   .feature:hover { border-color: var(--border-2); background: var(--bg-3); }
   .feature-icon { width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .icon-green  { background: var(--green-dim); }
-  .icon-blue   { background: var(--blue-dim); }
-  .icon-amber  { background: var(--amber-dim); }
-  .icon-purple { background: var(--purple-dim); }
-  .icon-green  svg { stroke: var(--green); }
-  .icon-blue   svg { stroke: var(--blue); }
-  .icon-amber  svg { stroke: var(--amber); }
-  .icon-purple svg { stroke: var(--purple); }
+  .icon-green  { background: var(--green-dim); } .icon-green  svg { stroke: var(--green); }
+  .icon-blue   { background: var(--blue-dim);  } .icon-blue   svg { stroke: var(--blue); }
+  .icon-amber  { background: var(--amber-dim); } .icon-amber  svg { stroke: var(--amber); }
+  .icon-purple { background: var(--purple-dim);} .icon-purple svg { stroke: var(--purple); }
   .feature-icon svg { width: 15px; height: 15px; }
   .feature-body { flex: 1; min-width: 0; }
   .feature-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
   .feature-desc { font-size: 12px; color: var(--text-muted); line-height: 1.55; }
   .feature-right { flex-shrink: 0; padding-top: 1px; }
   .tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border-radius: 5px; padding: 2px 8px; white-space: nowrap; border: 1px solid; }
-  .tag-wip     { color: var(--green);  background: var(--green-dim);  border-color: var(--green-border); }
-  .tag-planned { color: var(--text-muted); background: var(--bg-4); border-color: var(--border); }
-  .tag-eval    { color: var(--amber);  background: var(--amber-dim);  border-color: var(--amber-border); }
-  .tag-premium { color: var(--amber);  background: var(--amber-dim);  border-color: var(--amber-border); }
-  .tag-future  { color: var(--purple); background: var(--purple-dim); border-color: var(--purple-border); }
+  .tag-wip     { color: var(--green);        background: var(--green-dim);  border-color: var(--green-border); }
+  .tag-planned { color: var(--text-muted);   background: var(--bg-4);       border-color: var(--border); }
+  .tag-eval    { color: var(--amber);        background: var(--amber-dim);  border-color: var(--amber-border); }
+  .tag-premium { color: var(--amber);        background: var(--amber-dim);  border-color: var(--amber-border); }
+  .tag-future  { color: var(--purple);       background: var(--purple-dim); border-color: var(--purple-border); }
 
+  /* CTA */
   .cta-section { background: var(--bg-2); border: 1px solid var(--border); border-radius: 16px; padding: 40px 32px; text-align: center; margin-bottom: 56px; }
   .cta-section h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 10px; }
   .cta-section p { font-size: 14px; color: var(--text-secondary); max-width: 440px; margin: 0 auto 28px; line-height: 1.7; }
@@ -113,12 +108,13 @@
 
   footer { border-top: 1px solid var(--border); padding: 28px 0; text-align: center; font-size: 12px; color: var(--text-muted); }
 
-  @media (max-width: 540px) {
-    .hero { padding: 48px 0 40px; }
+  @media (max-width: 560px) {
+    .hero { padding: 48px 0 36px; }
     .nav-inner { padding: 12px 16px; }
     .container { padding: 0 16px; }
     .cta-section { padding: 28px 20px; }
     .version-strip { flex-direction: column; gap: 16px; }
+    .nav-logo-name { display: none; }
   }
 </style>
 </head>
@@ -133,7 +129,13 @@
       <span class="nav-logo-name">GymPal</span>
       <span class="nav-badge">Beta</span>
     </div>
-    <a class="nav-feedback" href="mailto:cordellasandrodev9@proton.me?subject=GymPal%20Feedback">Scrivi feedback</a>
+    <div class="nav-right">
+      <div class="lang-switch">
+        <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+        <button class="lang-btn" onclick="setLang('it')" id="btn-it">IT</button>
+      </div>
+      <a class="nav-feedback" id="nav-cta" href="mailto:cordellasandrodev9@proton.me?subject=GymPal%20Feedback">Send feedback</a>
+    </div>
   </div>
 </nav>
 
@@ -142,281 +144,279 @@
   <section class="hero">
     <div class="hero-eyebrow">
       <div class="hero-eyebrow-dot"></div>
-      Sviluppo attivo
+      <span data-t="eyebrow">Active development</span>
     </div>
-    <h1>Cosa stiamo<br>costruendo <span>su GymPal.</span></h1>
-    <p class="hero-desc">
-      Una panoramica trasparente di ciò su cui stiamo lavorando, cosa è in arrivo e dove vogliamo portare il prodotto. Le priorità si adattano continuamente in base ai feedback degli utenti.
-    </p>
+    <h1 data-t="hero-h1-line1">What we're<br>building <span data-t="hero-h1-accent">on GymPal.</span></h1>
+    <p class="hero-desc" data-t="hero-desc">A transparent overview of what we're working on, what's coming next, and where we want to take the product. Priorities shift continuously based on user feedback.</p>
     <div class="hero-meta">
-      <div class="meta-item">Versione corrente: <strong>0.7.7</strong></div>
+      <div class="meta-item"><span data-t="meta-version">Current version:</span> <strong>0.7.7</strong></div>
       <div class="meta-dot"></div>
-      <div class="meta-item">Piattaforma: <strong>Android</strong></div>
+      <div class="meta-item"><span data-t="meta-platform">Platform:</span> <strong>Android</strong></div>
       <div class="meta-dot"></div>
-      <div class="meta-item">Aggiornata: <strong>Aprile 2026</strong></div>
+      <div class="meta-item"><span data-t="meta-updated">Updated:</span> <strong data-t="meta-date">April 2026</strong></div>
     </div>
   </section>
 
   <div class="version-strip">
     <div>
-      <div class="version-label">Ciclo attuale</div>
+      <div class="version-label" data-t="v-current-label">Current cycle</div>
       <div class="version-number"><span>0.7</span>.x</div>
-      <div class="version-desc">Focus su miglioramenti UX, rifinitura dell'interfaccia e correzione dei bug emersi durante i test interni. Nessuna funzionalità major in questo ciclo.</div>
+      <div class="version-desc" data-t="v-current-desc">Focus on UX improvements, UI polish, and fixing bugs found during internal testing. No major new features in this cycle.</div>
     </div>
     <div>
-      <div class="version-label">Prossimo traguardo</div>
+      <div class="version-label" data-t="v-next-label">Next milestone</div>
       <div class="version-next-tag">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         0.8 — early testers
       </div>
-      <div class="version-next-sub">Prima versione aperta a tester esterni. Stiamo preparando l'app per questo passaggio.</div>
+      <div class="version-next-sub" data-t="v-next-sub">First version open to external testers. We're getting the app ready for this step.</div>
     </div>
   </div>
 
-  <!-- IN LAVORAZIONE -->
+  <!-- IN PROGRESS -->
   <section class="section">
-    <div class="section-label label-green">In lavorazione</div>
-    <div class="section-title">Attualmente in sviluppo</div>
-    <div class="section-desc">Le aree su cui stiamo lavorando in questo momento, nel ciclo 0.7.x e nella transizione verso 0.8.</div>
+    <div class="section-label label-green" data-t="s1-label">In progress</div>
+    <div class="section-title" data-t="s1-title">Currently in development</div>
+    <div class="section-desc" data-t="s1-desc">What we're actively working on right now, in the 0.7.x cycle and in the transition toward 0.8.</div>
     <div class="features">
 
       <div class="feature">
         <div class="feature-icon icon-green"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Visualizzazione scheda durante l'allenamento</div>
-          <div class="feature-desc">Consulta la scheda in corso, naviga tra gli esercizi con swipe e accedi ai dettagli di ogni serie senza interrompere il flusso.</div>
+          <div class="feature-title" data-t="f1-t">Workout sheet view during training</div>
+          <div class="feature-desc" data-t="f1-d">View your workout plan while training, swipe between exercises, and access set details without interrupting the flow.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-wip">In corso</span></div>
+        <div class="feature-right"><span class="tag tag-wip" data-t="tag-wip">In progress</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-green"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Swipe tra schede ed esercizi</div>
-          <div class="feature-desc">Navigazione gestuale per scorrere tra schede e tra gli esercizi di una scheda, senza dover usare i bottoni.</div>
+          <div class="feature-title" data-t="f2-t">Swipe navigation between routines and exercises</div>
+          <div class="feature-desc" data-t="f2-d">Gesture-based navigation to scroll between routines and between exercises within a routine — no buttons needed.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-wip">In corso</span></div>
+        <div class="feature-right"><span class="tag tag-wip" data-t="tag-wip-2">In progress</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-green"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Rifinitura dell'interfaccia</div>
-          <div class="feature-desc">Revisione continua di spaziature, tipografia, transizioni e coerenza visiva su tutte le schermate.</div>
+          <div class="feature-title" data-t="f3-t">UI polish</div>
+          <div class="feature-desc" data-t="f3-d">Ongoing review of spacing, typography, transitions and visual consistency across all screens.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-wip">Continuo</span></div>
+        <div class="feature-right"><span class="tag tag-wip" data-t="tag-ongoing">Ongoing</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-green"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Pull-to-refresh su liste e grafici</div>
-          <div class="feature-desc">Swipe verso il basso per ricaricare manualmente i dati su qualsiasi lista o pagina grafica dell'app.</div>
+          <div class="feature-title" data-t="f4-t">Pull-to-refresh on lists and charts</div>
+          <div class="feature-desc" data-t="f4-d">Swipe down to manually reload data on any list or chart page in the app.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-wip">In corso</span></div>
+        <div class="feature-right"><span class="tag tag-wip" data-t="tag-wip-4">In progress</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-green"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Ricerca esercizi migliorata</div>
-          <div class="feature-desc">Scroll automatico al nuovo esercizio appena creato, filtri rivisti e un'esperienza di ricerca più coerente in tutta l'app.</div>
+          <div class="feature-title" data-t="f5-t">Improved exercise search</div>
+          <div class="feature-desc" data-t="f5-d">Auto-scroll to a newly created exercise, revised filters following common standards, and a more consistent search experience throughout the app.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-wip">In corso</span></div>
+        <div class="feature-right"><span class="tag tag-wip" data-t="tag-wip-5">In progress</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-green"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Allenamento a cavallo della mezzanotte</div>
-          <div class="feature-desc">Gestione corretta del caso in cui una sessione inizia prima e termina dopo mezzanotte — il giorno viene assegnato in modo coerente.</div>
+          <div class="feature-title" data-t="f6-t">Workout spanning midnight</div>
+          <div class="feature-desc" data-t="f6-d">Proper handling of sessions that start before and end after midnight — the day is assigned in a consistent and expected way.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-wip">In corso</span></div>
+        <div class="feature-right"><span class="tag tag-wip" data-t="tag-wip-6">In progress</span></div>
       </div>
 
     </div>
   </section>
 
-  <!-- PROSSIMAMENTE -->
+  <!-- COMING SOON -->
   <section class="section">
-    <div class="section-label label-blue">Prossimamente</div>
-    <div class="section-title">In arrivo</div>
-    <div class="section-desc">Funzionalità confermate per i prossimi aggiornamenti. L'ordine di sviluppo viene definito in base ai feedback e alle priorità emergenti — non è fisso.</div>
+    <div class="section-label label-blue" data-t="s2-label">Coming soon</div>
+    <div class="section-title" data-t="s2-title">On the way</div>
+    <div class="section-desc" data-t="s2-desc">Confirmed features for upcoming updates. Development order is decided as we go, based on feedback and emerging priorities — it's not fixed.</div>
     <div class="features">
 
       <div class="feature">
         <div class="feature-icon icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Streak di allenamento</div>
-          <div class="feature-desc">Giorni consecutivi tracciati automaticamente, con streak corrente e record personale. Un promemoria quotidiano della propria costanza.</div>
+          <div class="feature-title" data-t="f7-t">Training streak</div>
+          <div class="feature-desc" data-t="f7-d">Consecutive training days tracked automatically, showing your current streak and personal record. A daily reminder of your consistency.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-planned">Pianificato</span></div>
+        <div class="feature-right"><span class="tag tag-planned" data-t="tag-planned">Planned</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Record personali</div>
-          <div class="feature-desc">Peso massimo per ogni esercizio, sessione più lunga e record di giorni consecutivi — aggiornati automaticamente ad ogni allenamento.</div>
+          <div class="feature-title" data-t="f8-t">Personal records</div>
+          <div class="feature-desc" data-t="f8-d">Max weight per exercise, longest session, and streak record — updated automatically after each workout.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-planned">Pianificato</span></div>
+        <div class="feature-right"><span class="tag tag-planned" data-t="tag-planned-2">Planned</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Calendario nel notebook con note</div>
-          <div class="feature-desc">Vista mensile nella sezione notebook. Tap su un giorno per aggiungere note libere, tag o collegare la sessione registrata.</div>
+          <div class="feature-title" data-t="f9-t">Notebook calendar with notes</div>
+          <div class="feature-desc" data-t="f9-d">Monthly calendar view in the notebook section. Tap a day to add free notes, tags, or link it to the logged session.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-planned">Pianificato</span></div>
+        <div class="feature-right"><span class="tag tag-planned" data-t="tag-planned-3">Planned</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Allenamento libero</div>
-          <div class="feature-desc">Avvia una sessione senza scheda e aggiungi esercizi al momento. Utile anche per chi vuole deviare dal programma senza rinunciare al tracciamento.</div>
+          <div class="feature-title" data-t="f10-t">Free workout mode</div>
+          <div class="feature-desc" data-t="f10-d">Start a session without a routine and add exercises on the fly. Also useful for deviating from the plan without losing tracking.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-planned">Pianificato</span></div>
+        <div class="feature-right"><span class="tag tag-planned" data-t="tag-planned-4">Planned</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Pagina progressi ampliata</div>
-          <div class="feature-desc">Nuovi tipi di grafico (volume totale, ripetizioni, frequenza), confronto tra periodi e una visione più ricca dell'andamento nel tempo.</div>
+          <div class="feature-title" data-t="f11-t">Expanded progress charts</div>
+          <div class="feature-desc" data-t="f11-d">New chart types (total volume, reps, frequency), period comparison, and a richer view of your progress over time.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-planned">Pianificato</span></div>
+        <div class="feature-right"><span class="tag tag-planned" data-t="tag-planned-5">Planned</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .92h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Cronometro in barra notifiche e lock screen</div>
-          <div class="feature-desc">Il timer del recupero rimane visibile anche con il telefono bloccato o mentre si usa un'altra app. Nessun bisogno di riaprire GymPal.</div>
+          <div class="feature-title" data-t="f12-t">Rest timer on notification bar and lock screen</div>
+          <div class="feature-desc" data-t="f12-d">The rest timer stays visible even when the phone is locked or you're using another app. No need to reopen GymPal to check.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-planned">Pianificato</span></div>
+        <div class="feature-right"><span class="tag tag-planned" data-t="tag-planned-6">Planned</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Immagini e video sugli esercizi</div>
-          <div class="feature-desc">Scheda esercizio con indicazioni visive sull'esecuzione corretta, per ridurre il rischio di errori tecnici — soprattutto per chi si allena da solo.</div>
+          <div class="feature-title" data-t="f13-t">Exercise images and videos</div>
+          <div class="feature-desc" data-t="f13-d">Exercise pages enriched with visual guidance on correct form — especially useful for those training alone.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-planned">Pianificato</span></div>
+        <div class="feature-right"><span class="tag tag-planned" data-t="tag-planned-7">Planned</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Creazione rapida scheda — editing massivo</div>
-          <div class="feature-desc">Costruisci o modifica un'intera scheda in pochi passaggi senza aprire ogni esercizio singolarmente. Ideale per chi costruisce spesso nuovi programmi.</div>
+          <div class="feature-title" data-t="f14-t">Quick routine builder — bulk editing</div>
+          <div class="feature-desc" data-t="f14-d">Build or edit an entire routine in a few steps without opening each exercise individually. Ideal for those who create new programs often.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-planned">Pianificato</span></div>
+        <div class="feature-right"><span class="tag tag-planned" data-t="tag-planned-8">Planned</span></div>
       </div>
 
     </div>
   </section>
 
-  <!-- IN VALUTAZIONE -->
+  <!-- UNDER EVALUATION -->
   <section class="section">
-    <div class="section-label label-amber">In valutazione</div>
-    <div class="section-title">Idee confermate, tempi da definire</div>
-    <div class="section-desc">Feature che vogliamo realizzare, ma che richiedono più progettazione o dipendono dall'evoluzione del prodotto.</div>
+    <div class="section-label label-amber" data-t="s3-label">Under evaluation</div>
+    <div class="section-title" data-t="s3-title">Confirmed ideas, timing TBD</div>
+    <div class="section-desc" data-t="s3-desc">Features we want to build, but that require more design work or depend on how the product evolves.</div>
     <div class="features">
 
       <div class="feature">
         <div class="feature-icon icon-amber"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Tracciamento misure corporee</div>
-          <div class="feature-desc">Registra peso corporeo, circonferenze e altre misure nel tempo, con grafici integrati nella pagina progressi per una visione completa dei cambiamenti fisici.</div>
+          <div class="feature-title" data-t="f15-t">Body measurements tracking</div>
+          <div class="feature-desc" data-t="f15-d">Log body weight, circumferences and other measurements over time, with charts integrated in the progress section for a complete picture of physical changes.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-eval">In valutazione</span></div>
+        <div class="feature-right"><span class="tag tag-eval" data-t="tag-eval">Under evaluation</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-amber"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 19.07a10 10 0 010-14.14"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Generazione scheda personalizzata</div>
-          <div class="feature-desc">Inserisci obiettivi, giorni disponibili, attrezzatura e livello — l'app propone una scheda su misura, pronta da usare o da personalizzare.</div>
+          <div class="feature-title" data-t="f16-t">AI-assisted routine generator</div>
+          <div class="feature-desc" data-t="f16-d">Enter your goals, available days, equipment and experience level — the app suggests a tailored routine ready to use or customise.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-eval">In valutazione</span></div>
+        <div class="feature-right"><span class="tag tag-eval" data-t="tag-eval-2">Under evaluation</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-amber"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Tema chiaro e scelta del colore primario</div>
-          <div class="feature-desc">Supporto alla modalità light oltre al dark attuale, con la possibilità di personalizzare il colore accent dell'app.</div>
+          <div class="feature-title" data-t="f17-t">Light theme and accent colour picker</div>
+          <div class="feature-desc" data-t="f17-d">Light mode support alongside the current dark theme, with the option to choose a custom accent colour from a curated selection.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-eval">In valutazione</span></div>
+        <div class="feature-right"><span class="tag tag-eval" data-t="tag-eval-3">Under evaluation</span></div>
       </div>
 
     </div>
   </section>
 
-  <!-- FUTURO -->
+  <!-- FUTURE -->
   <section class="section">
-    <div class="section-label label-purple">Futuro</div>
-    <div class="section-title">Sul radar — nessuna data prevista</div>
-    <div class="section-desc">Funzionalità più ambiziose o che dipendono da infrastrutture non ancora in piedi. Alcune sono destinate a un piano premium futuro.</div>
+    <div class="section-label label-purple" data-t="s4-label">Future</div>
+    <div class="section-title" data-t="s4-title">On the radar — no timeline</div>
+    <div class="section-desc" data-t="s4-desc">Ambitious features or ones that depend on infrastructure not yet in place. Some are intended for a future premium plan.</div>
     <div class="features">
 
       <div class="feature">
         <div class="feature-icon icon-purple"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Dashboard personalizzata</div>
-          <div class="feature-desc">Costruisci la tua schermata principale con i grafici e i dati che ti interessano di più, disposti come preferisci.</div>
+          <div class="feature-title" data-t="f18-t">Custom dashboard</div>
+          <div class="feature-desc" data-t="f18-d">Build your own home screen with the charts and data that matter most to you, arranged however you like.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-premium">Premium</span></div>
+        <div class="feature-right"><span class="tag tag-premium" data-t="tag-premium">Premium</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-purple"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Analisi della scheda</div>
-          <div class="feature-desc">Report automatico su serie per gruppo muscolare, rapporto spinta/trazione, distribuzione del volume settimanale e segnalazione di possibili squilibri.</div>
+          <div class="feature-title" data-t="f19-t">Routine analysis</div>
+          <div class="feature-desc" data-t="f19-d">Automatic report on sets per muscle group, push/pull ratio, weekly volume distribution and imbalance alerts.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-premium">Premium</span></div>
+        <div class="feature-right"><span class="tag tag-premium" data-t="tag-premium-2">Premium</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-purple"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Export del notebook</div>
-          <div class="feature-desc">Esporta note, sessioni e dati in formato PDF o CSV — per condividere con un trainer o conservare un backup leggibile fuori dall'app.</div>
+          <div class="feature-title" data-t="f20-t">Notebook export</div>
+          <div class="feature-desc" data-t="f20-d">Export notes, sessions and data as PDF or CSV — useful for sharing with a coach or keeping a readable backup outside the app.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-premium">Premium</span></div>
+        <div class="feature-right"><span class="tag tag-premium" data-t="tag-premium-3">Premium</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-purple"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Sincronizzazione cloud e account opzionale</div>
-          <div class="feature-desc">Account per sincronizzare i dati tra dispositivi con backup automatico. La modalità offline resterà sempre disponibile senza registrazione.</div>
+          <div class="feature-title" data-t="f21-t">Cloud sync and optional account</div>
+          <div class="feature-desc" data-t="f21-d">Account to sync data across devices with automatic backup. Offline mode will always remain available without registration.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-future">Futuro</span></div>
+        <div class="feature-right"><span class="tag tag-future" data-t="tag-future">Future</span></div>
       </div>
 
       <div class="feature">
         <div class="feature-icon icon-purple"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
         <div class="feature-body">
-          <div class="feature-title">Funzioni social — condivisione schede e progressi</div>
-          <div class="feature-desc">Condividi una scheda con un amico o mostra i tuoi progressi come card sui social. Possibili integrazioni con piattaforme esterne in valutazione.</div>
+          <div class="feature-title" data-t="f22-t">Social features — share routines and progress</div>
+          <div class="feature-desc" data-t="f22-d">Share a routine with a friend or show your progress as a card on social media. Possible integrations with external platforms under consideration.</div>
         </div>
-        <div class="feature-right"><span class="tag tag-future">Futuro</span></div>
+        <div class="feature-right"><span class="tag tag-future" data-t="tag-future-2">Future</span></div>
       </div>
 
     </div>
   </section>
 
   <section class="cta-section">
-    <h2>Il tuo feedback guida le priorità.</h2>
-    <p>Siamo in beta e ogni segnalazione — un bug, un'idea, qualcosa che non ti convince — finisce direttamente nella lista. Scrivi liberamente, non serve un formato specifico.</p>
+    <h2 data-t="cta-title">Your feedback shapes the priorities.</h2>
+    <p data-t="cta-desc">We're in beta and every report — a bug, an idea, something that doesn't feel right — goes directly on the list. Write freely, no specific format needed.</p>
     <div class="cta-buttons">
-      <a class="btn-primary" href="mailto:cordellasandrodev9@proton.me?subject=GymPal%20Feedback&body=Ciao%2C%20volevo%20condividere%20un%20feedback%20su%20GymPal%3A%0A%0A">Scrivi un feedback</a>
-      <a class="btn-secondary" href="mailto:cordellasandrodev9@proton.me?subject=Suggerimento%20per%20GymPal">Suggerisci una feature</a>
+      <a class="btn-primary" id="cta-btn-1" href="mailto:cordellasandrodev9@proton.me?subject=GymPal%20Feedback&body=Hi%2C%20I%20wanted%20to%20share%20some%20feedback%20on%20GymPal%3A%0A%0A" data-t="cta-btn1">Send feedback</a>
+      <a class="btn-secondary" id="cta-btn-2" href="mailto:cordellasandrodev9@proton.me?subject=GymPal%20Feature%20suggestion" data-t="cta-btn2">Suggest a feature</a>
     </div>
   </section>
 
@@ -424,9 +424,204 @@
 
 <footer>
   <div class="container">
-    GymPal &mdash; Il tuo compagno di allenamento &nbsp;&middot;&nbsp; Roadmap aggiornata ad aprile 2026
+    <span data-t="footer">GymPal — Your training companion &nbsp;&middot;&nbsp; Roadmap updated April 2026</span>
   </div>
 </footer>
 
+<script>
+const translations = {
+  en: {
+    "eyebrow": "Active development",
+    "hero-h1-line1": "What we're<br>building <span>on GymPal.</span>",
+    "hero-desc": "A transparent overview of what we're working on, what's coming next, and where we want to take the product. Priorities shift continuously based on user feedback.",
+    "meta-version": "Current version:",
+    "meta-platform": "Platform:",
+    "meta-updated": "Updated:",
+    "meta-date": "April 2026",
+    "v-current-label": "Current cycle",
+    "v-current-desc": "Focus on UX improvements, UI polish, and fixing bugs found during internal testing. No major new features in this cycle.",
+    "v-next-label": "Next milestone",
+    "v-next-sub": "First version open to external testers. We're getting the app ready for this step.",
+    "s1-label": "In progress",
+    "s1-title": "Currently in development",
+    "s1-desc": "What we're actively working on right now, in the 0.7.x cycle and in the transition toward 0.8.",
+    "f1-t": "Workout sheet view during training",
+    "f1-d": "View your workout plan while training, swipe between exercises, and access set details without interrupting the flow.",
+    "f2-t": "Swipe navigation between routines and exercises",
+    "f2-d": "Gesture-based navigation to scroll between routines and between exercises within a routine — no buttons needed.",
+    "f3-t": "UI polish",
+    "f3-d": "Ongoing review of spacing, typography, transitions and visual consistency across all screens.",
+    "f4-t": "Pull-to-refresh on lists and charts",
+    "f4-d": "Swipe down to manually reload data on any list or chart page in the app.",
+    "f5-t": "Improved exercise search",
+    "f5-d": "Auto-scroll to a newly created exercise, revised filters following common standards, and a more consistent search experience throughout the app.",
+    "f6-t": "Workout spanning midnight",
+    "f6-d": "Proper handling of sessions that start before and end after midnight — the day is assigned in a consistent and expected way.",
+    "tag-wip": "In progress", "tag-wip-2": "In progress", "tag-wip-4": "In progress", "tag-wip-5": "In progress", "tag-wip-6": "In progress",
+    "tag-ongoing": "Ongoing",
+    "s2-label": "Coming soon",
+    "s2-title": "On the way",
+    "s2-desc": "Confirmed features for upcoming updates. Development order is decided as we go, based on feedback and emerging priorities — it's not fixed.",
+    "f7-t": "Training streak",
+    "f7-d": "Consecutive training days tracked automatically, showing your current streak and personal record. A daily reminder of your consistency.",
+    "f8-t": "Personal records",
+    "f8-d": "Max weight per exercise, longest session, and streak record — updated automatically after each workout.",
+    "f9-t": "Notebook calendar with notes",
+    "f9-d": "Monthly calendar view in the notebook section. Tap a day to add free notes, tags, or link it to the logged session.",
+    "f10-t": "Free workout mode",
+    "f10-d": "Start a session without a routine and add exercises on the fly. Also useful for deviating from the plan without losing tracking.",
+    "f11-t": "Expanded progress charts",
+    "f11-d": "New chart types (total volume, reps, frequency), period comparison, and a richer view of your progress over time.",
+    "f12-t": "Rest timer on notification bar and lock screen",
+    "f12-d": "The rest timer stays visible even when the phone is locked or you're using another app. No need to reopen GymPal to check.",
+    "f13-t": "Exercise images and videos",
+    "f13-d": "Exercise pages enriched with visual guidance on correct form — especially useful for those training alone.",
+    "f14-t": "Quick routine builder — bulk editing",
+    "f14-d": "Build or edit an entire routine in a few steps without opening each exercise individually. Ideal for those who create new programs often.",
+    "tag-planned": "Planned", "tag-planned-2": "Planned", "tag-planned-3": "Planned", "tag-planned-4": "Planned",
+    "tag-planned-5": "Planned", "tag-planned-6": "Planned", "tag-planned-7": "Planned", "tag-planned-8": "Planned",
+    "s3-label": "Under evaluation",
+    "s3-title": "Confirmed ideas, timing TBD",
+    "s3-desc": "Features we want to build, but that require more design work or depend on how the product evolves.",
+    "f15-t": "Body measurements tracking",
+    "f15-d": "Log body weight, circumferences and other measurements over time, with charts integrated in the progress section for a complete picture of physical changes.",
+    "f16-t": "AI-assisted routine generator",
+    "f16-d": "Enter your goals, available days, equipment and experience level — the app suggests a tailored routine ready to use or customise.",
+    "f17-t": "Light theme and accent colour picker",
+    "f17-d": "Light mode support alongside the current dark theme, with the option to choose a custom accent colour from a curated selection.",
+    "tag-eval": "Under evaluation", "tag-eval-2": "Under evaluation", "tag-eval-3": "Under evaluation",
+    "s4-label": "Future",
+    "s4-title": "On the radar — no timeline",
+    "s4-desc": "Ambitious features or ones that depend on infrastructure not yet in place. Some are intended for a future premium plan.",
+    "f18-t": "Custom dashboard",
+    "f18-d": "Build your own home screen with the charts and data that matter most to you, arranged however you like.",
+    "f19-t": "Routine analysis",
+    "f19-d": "Automatic report on sets per muscle group, push/pull ratio, weekly volume distribution and imbalance alerts.",
+    "f20-t": "Notebook export",
+    "f20-d": "Export notes, sessions and data as PDF or CSV — useful for sharing with a coach or keeping a readable backup outside the app.",
+    "f21-t": "Cloud sync and optional account",
+    "f21-d": "Account to sync data across devices with automatic backup. Offline mode will always remain available without registration.",
+    "f22-t": "Social features — share routines and progress",
+    "f22-d": "Share a routine with a friend or show your progress as a card on social media. Possible integrations with external platforms under consideration.",
+    "tag-premium": "Premium", "tag-premium-2": "Premium", "tag-premium-3": "Premium",
+    "tag-future": "Future", "tag-future-2": "Future",
+    "cta-title": "Your feedback shapes the priorities.",
+    "cta-desc": "We're in beta and every report — a bug, an idea, something that doesn't feel right — goes directly on the list. Write freely, no specific format needed.",
+    "cta-btn1": "Send feedback",
+    "cta-btn2": "Suggest a feature",
+    "footer": "GymPal — Your training companion \u00a0\u00b7\u00a0 Roadmap updated April 2026",
+    "nav-cta": "Send feedback"
+  },
+  it: {
+    "eyebrow": "Sviluppo attivo",
+    "hero-h1-line1": "Cosa stiamo<br>costruendo <span>su GymPal.</span>",
+    "hero-desc": "Una panoramica trasparente di ciò su cui stiamo lavorando, cosa è in arrivo e dove vogliamo portare il prodotto. Le priorità si adattano continuamente in base ai feedback degli utenti.",
+    "meta-version": "Versione corrente:",
+    "meta-platform": "Piattaforma:",
+    "meta-updated": "Aggiornata:",
+    "meta-date": "Aprile 2026",
+    "v-current-label": "Ciclo attuale",
+    "v-current-desc": "Focus su miglioramenti UX, rifinitura dell'interfaccia e correzione dei bug emersi durante i test interni. Nessuna funzionalità major in questo ciclo.",
+    "v-next-label": "Prossimo traguardo",
+    "v-next-sub": "Prima versione aperta a tester esterni. Stiamo preparando l'app per questo passaggio.",
+    "s1-label": "In lavorazione",
+    "s1-title": "Attualmente in sviluppo",
+    "s1-desc": "Le aree su cui stiamo lavorando in questo momento, nel ciclo 0.7.x e nella transizione verso 0.8.",
+    "f1-t": "Visualizzazione scheda durante l'allenamento",
+    "f1-d": "Consulta la scheda in corso, naviga tra gli esercizi con swipe e accedi ai dettagli di ogni serie senza interrompere il flusso.",
+    "f2-t": "Swipe tra schede ed esercizi",
+    "f2-d": "Navigazione gestuale per scorrere tra schede e tra gli esercizi di una scheda, senza dover usare i bottoni.",
+    "f3-t": "Rifinitura dell'interfaccia",
+    "f3-d": "Revisione continua di spaziature, tipografia, transizioni e coerenza visiva su tutte le schermate.",
+    "f4-t": "Pull-to-refresh su liste e grafici",
+    "f4-d": "Swipe verso il basso per ricaricare manualmente i dati su qualsiasi lista o pagina grafica dell'app.",
+    "f5-t": "Ricerca esercizi migliorata",
+    "f5-d": "Scroll automatico al nuovo esercizio appena creato, filtri rivisti e un'esperienza di ricerca più coerente in tutta l'app.",
+    "f6-t": "Allenamento a cavallo della mezzanotte",
+    "f6-d": "Gestione corretta del caso in cui una sessione inizia prima e termina dopo mezzanotte — il giorno viene assegnato in modo coerente.",
+    "tag-wip": "In corso", "tag-wip-2": "In corso", "tag-wip-4": "In corso", "tag-wip-5": "In corso", "tag-wip-6": "In corso",
+    "tag-ongoing": "Continuo",
+    "s2-label": "Prossimamente",
+    "s2-title": "In arrivo",
+    "s2-desc": "Funzionalità confermate per i prossimi aggiornamenti. L'ordine di sviluppo viene definito in base ai feedback e alle priorità emergenti — non è fisso.",
+    "f7-t": "Streak di allenamento",
+    "f7-d": "Giorni consecutivi tracciati automaticamente, con streak corrente e record personale. Un promemoria quotidiano della propria costanza.",
+    "f8-t": "Record personali",
+    "f8-d": "Peso massimo per ogni esercizio, sessione più lunga e record di giorni consecutivi — aggiornati automaticamente ad ogni allenamento.",
+    "f9-t": "Calendario nel notebook con note",
+    "f9-d": "Vista mensile nella sezione notebook. Tap su un giorno per aggiungere note libere, tag o collegare la sessione registrata.",
+    "f10-t": "Allenamento libero",
+    "f10-d": "Avvia una sessione senza scheda e aggiungi esercizi al momento. Utile anche per chi vuole deviare dal programma senza rinunciare al tracciamento.",
+    "f11-t": "Pagina progressi ampliata",
+    "f11-d": "Nuovi tipi di grafico (volume totale, ripetizioni, frequenza), confronto tra periodi e una visione più ricca dell'andamento nel tempo.",
+    "f12-t": "Cronometro in barra notifiche e lock screen",
+    "f12-d": "Il timer del recupero rimane visibile anche con il telefono bloccato o mentre si usa un'altra app. Nessun bisogno di riaprire GymPal.",
+    "f13-t": "Immagini e video sugli esercizi",
+    "f13-d": "Scheda esercizio con indicazioni visive sull'esecuzione corretta, per ridurre il rischio di errori tecnici — soprattutto per chi si allena da solo.",
+    "f14-t": "Creazione rapida scheda — editing massivo",
+    "f14-d": "Costruisci o modifica un'intera scheda in pochi passaggi senza aprire ogni esercizio singolarmente. Ideale per chi costruisce spesso nuovi programmi.",
+    "tag-planned": "Pianificato", "tag-planned-2": "Pianificato", "tag-planned-3": "Pianificato", "tag-planned-4": "Pianificato",
+    "tag-planned-5": "Pianificato", "tag-planned-6": "Pianificato", "tag-planned-7": "Pianificato", "tag-planned-8": "Pianificato",
+    "s3-label": "In valutazione",
+    "s3-title": "Idee confermate, tempi da definire",
+    "s3-desc": "Feature che vogliamo realizzare, ma che richiedono più progettazione o dipendono dall'evoluzione del prodotto.",
+    "f15-t": "Tracciamento misure corporee",
+    "f15-d": "Registra peso corporeo, circonferenze e altre misure nel tempo, con grafici integrati nella pagina progressi per una visione completa dei cambiamenti fisici.",
+    "f16-t": "Generazione scheda personalizzata",
+    "f16-d": "Inserisci obiettivi, giorni disponibili, attrezzatura e livello — l'app propone una scheda su misura, pronta da usare o da personalizzare.",
+    "f17-t": "Tema chiaro e scelta del colore primario",
+    "f17-d": "Supporto alla modalità light oltre al dark attuale, con la possibilità di personalizzare il colore accent dell'app.",
+    "tag-eval": "In valutazione", "tag-eval-2": "In valutazione", "tag-eval-3": "In valutazione",
+    "s4-label": "Futuro",
+    "s4-title": "Sul radar — nessuna data prevista",
+    "s4-desc": "Funzionalità più ambiziose o che dipendono da infrastrutture non ancora in piedi. Alcune sono destinate a un piano premium futuro.",
+    "f18-t": "Dashboard personalizzata",
+    "f18-d": "Costruisci la tua schermata principale con i grafici e i dati che ti interessano di più, disposti come preferisci.",
+    "f19-t": "Analisi della scheda",
+    "f19-d": "Report automatico su serie per gruppo muscolare, rapporto spinta/trazione, distribuzione del volume settimanale e segnalazione di possibili squilibri.",
+    "f20-t": "Export del notebook",
+    "f20-d": "Esporta note, sessioni e dati in formato PDF o CSV — per condividere con un trainer o conservare un backup leggibile fuori dall'app.",
+    "f21-t": "Sincronizzazione cloud e account opzionale",
+    "f21-d": "Account per sincronizzare i dati tra dispositivi con backup automatico. La modalità offline resterà sempre disponibile senza registrazione.",
+    "f22-t": "Funzioni social — condivisione schede e progressi",
+    "f22-d": "Condividi una scheda con un amico o mostra i tuoi progressi come card sui social. Possibili integrazioni con piattaforme esterne in valutazione.",
+    "tag-premium": "Premium", "tag-premium-2": "Premium", "tag-premium-3": "Premium",
+    "tag-future": "Futuro", "tag-future-2": "Futuro",
+    "cta-title": "Il tuo feedback guida le priorità.",
+    "cta-desc": "Siamo in beta e ogni segnalazione — un bug, un'idea, qualcosa che non ti convince — finisce direttamente nella lista. Scrivi liberamente, non serve un formato specifico.",
+    "cta-btn1": "Scrivi un feedback",
+    "cta-btn2": "Suggerisci una feature",
+    "footer": "GymPal — Il tuo compagno di allenamento \u00a0\u00b7\u00a0 Roadmap aggiornata ad aprile 2026",
+    "nav-cta": "Scrivi feedback"
+  }
+};
+
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = translations[lang];
+  document.documentElement.lang = lang;
+
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.getAttribute('data-t');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-it').classList.toggle('active', lang === 'it');
+
+  const mailSubject = lang === 'it'
+    ? 'GymPal%20Feedback&body=Ciao%2C%20volevo%20condividere%20un%20feedback%20su%20GymPal%3A%0A%0A'
+    : 'GymPal%20Feedback&body=Hi%2C%20I%20wanted%20to%20share%20some%20feedback%20on%20GymPal%3A%0A%0A';
+  const suggestSubject = lang === 'it'
+    ? 'Suggerimento%20per%20GymPal'
+    : 'GymPal%20Feature%20suggestion';
+
+  document.getElementById('nav-cta').href = `mailto:cordellasandrodev9@proton.me?subject=GymPal%20Feedback`;
+  document.getElementById('cta-btn-1').href = `mailto:cordellasandrodev9@proton.me?subject=${mailSubject}`;
+  document.getElementById('cta-btn-2').href = `mailto:cordellasandrodev9@proton.me?subject=${suggestSubject}`;
+}
+</script>
 </body>
 </html>
