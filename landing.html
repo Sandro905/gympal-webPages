@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GymPal — Track your workouts</title>
+<meta name="description" content="GymPal is the workout tracker that respects your time, your data, and your wallet. 100% offline, no account required.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #4CAF7D;
+    --green-bright: #5ddb9a;
+    --green-dim: #122a1e;
+    --green-border: #245c3d;
+    --green-glow: rgba(76, 175, 125, 0.15);
+    --bg: #0a0a0a;
+    --bg-2: #111111;
+    --bg-3: #161616;
+    --bg-card: #131313;
+    --border: #1e1e1e;
+    --border-2: #2a2a2a;
+    --text: #f5f5f5;
+    --text-2: #c0c0c0;
+    --text-3: #888;
+    --text-muted: #555;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  a { color: var(--green); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  img { display: block; max-width: 100%; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .section { padding: 100px 0; }
+  .section--sm { padding: 72px 0; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+  /* Hero animations (immediate, no scroll needed) */
+  .hero-animated { animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .hero-animated-2 { animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both; }
+  .hero-animated-3 { animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both; }
+  .hero-animated-4 { animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both; }
+  .hero-animated-5 { animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s both; }
+
+  /* NAV */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border-bottom: 1px solid var(--border);
+    animation: fadeIn 0.5s ease both;
+  }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto; padding: 16px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo { width: 32px; height: 32px; border-radius: 8px; }
+  .nav-name { font-size: 17px; font-weight: 700; letter-spacing: -0.4px; color: var(--text); }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a { color: var(--text-3); font-size: 14px; font-weight: 500; transition: color 0.15s; text-decoration: none; }
+  .nav-links a:hover { color: var(--text); text-decoration: none; }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--green); font-weight: 600; font-size: 14px;
+    padding: 9px 18px; border-radius: 8px; border: 1px solid var(--green-border);
+    transition: background 0.15s, border-color 0.15s;
+    text-decoration: none;
+  }
+  .nav-cta:hover { background: var(--green-dim); border-color: var(--green); text-decoration: none; }
+  .nav-cta svg { width: 16px; height: 16px; }
+
+  /* LANG SWITCH */
+  .lang-switch {
+    display: flex; align-items: center;
+    background: var(--bg-3); border: 1px solid var(--border-2);
+    border-radius: 8px; overflow: hidden;
+  }
+  .lang-btn {
+    font-family: var(--font); font-size: 12px; font-weight: 600;
+    padding: 6px 12px; cursor: pointer; color: var(--text-muted);
+    background: transparent; border: none; transition: color .15s, background .15s;
+    letter-spacing: 0.3px;
+  }
+  .lang-btn.active { color: var(--green); background: var(--green-dim); }
+  .lang-btn:hover:not(.active) { color: var(--text-3); }
+
+  .nav-mobile-toggle { display: none; background: none; border: none; color: var(--text); cursor: pointer; padding: 8px; }
+
+  /* HERO */
+  .hero {
+    padding: 160px 0 100px;
+    text-align: center;
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 600px;
+    background: radial-gradient(ellipse at center, var(--green-glow) 0%, transparent 70%);
+    pointer-events: none;
+    animation: fadeIn 1.5s ease both;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600; color: var(--green);
+    background: var(--green-dim); border: 1px solid var(--green-border);
+    border-radius: 24px; padding: 6px 16px; margin-bottom: 28px;
+  }
+  .hero-badge-dot {
+    width: 7px; height: 7px; background: var(--green-bright); border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .hero h1 {
+    font-size: clamp(40px, 7vw, 72px);
+    font-weight: 900; letter-spacing: -2px; line-height: 1.05;
+    margin-bottom: 24px;
+    background: linear-gradient(to bottom, var(--text) 40%, var(--text-2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: clamp(16px, 2.2vw, 20px);
+    color: var(--text-3); max-width: 580px; margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+  .hero-actions { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--green); color: #000; font-weight: 700; font-size: 16px;
+    padding: 14px 28px; border-radius: 12px;
+    transition: transform 0.15s, box-shadow 0.2s; text-decoration: none;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--green-glow); text-decoration: none; }
+  .btn-primary svg { width: 20px; height: 20px; }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--text-2); font-weight: 600; font-size: 15px;
+    padding: 14px 24px; border-radius: 12px;
+    border: 1px solid var(--border-2); background: transparent;
+    transition: border-color 0.15s, color 0.15s; text-decoration: none;
+  }
+  .btn-secondary:hover { border-color: var(--text-muted); color: var(--text); text-decoration: none; }
+
+  /* TRUST BAR */
+  .trust-bar {
+    display: flex; align-items: center; justify-content: center;
+    gap: 32px; flex-wrap: wrap; padding: 20px 0 0;
+    margin-top: 48px;
+  }
+  .trust-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 500; color: var(--text-muted);
+  }
+  .trust-item svg { width: 16px; height: 16px; color: var(--green); flex-shrink: 0; }
+
+  /* SHOWCASE */
+  .showcase { padding: 60px 0 100px; }
+  .showcase-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  }
+  .showcase-item {
+    border-radius: var(--radius); overflow: hidden;
+    border: 1px solid var(--border); background: var(--bg-2);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s;
+  }
+  .showcase-item:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), 0 0 40px var(--green-glow);
+  }
+  .showcase-item img { width: 100%; height: auto; display: block; }
+
+  /* FEATURES GRID */
+  .features-header { text-align: center; margin-bottom: 64px; }
+  .features-header .eyebrow {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--green); margin-bottom: 16px;
+  }
+  .features-header h2 {
+    font-size: clamp(28px, 4.5vw, 44px); font-weight: 800;
+    letter-spacing: -1px; margin-bottom: 16px;
+  }
+  .features-header p { color: var(--text-3); font-size: 17px; max-width: 540px; margin: 0 auto; }
+
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .feature-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 32px 28px; transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  }
+  .feature-card:hover {
+    border-color: var(--green-border); transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  }
+  .feature-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px; font-size: 20px;
+  }
+  .feature-icon--green { background: var(--green-dim); color: var(--green); }
+  .feature-icon--blue { background: #111a2e; color: #6699dd; }
+  .feature-icon--amber { background: #2a1f0a; color: #EF9F27; }
+  .feature-icon--purple { background: #1e1a30; color: #9f8fef; }
+  .feature-icon--cyan { background: #0a2228; color: #4dd4c0; }
+  .feature-icon--rose { background: #2a1520; color: #e06080; }
+  .feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.3px; }
+  .feature-card p { font-size: 14px; color: var(--text-3); line-height: 1.6; }
+
+  /* BIG FEATURE SECTIONS */
+  .big-feature {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+    padding: 100px 0;
+  }
+  .big-feature--reverse { direction: rtl; }
+  .big-feature--reverse > * { direction: ltr; }
+  .big-feature-content .eyebrow {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--green); margin-bottom: 14px;
+  }
+  .big-feature-content h2 {
+    font-size: clamp(26px, 3.5vw, 36px); font-weight: 800;
+    letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 18px;
+  }
+  .big-feature-content p { color: var(--text-3); font-size: 16px; margin-bottom: 24px; line-height: 1.7; }
+  .big-feature-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .big-feature-list li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 14px; color: var(--text-2);
+  }
+  .big-feature-list li svg { width: 18px; height: 18px; color: var(--green); flex-shrink: 0; margin-top: 2px; }
+  .big-feature-visual {
+    border-radius: var(--radius); overflow: hidden;
+    border: 1px solid var(--border); background: var(--bg-2);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s;
+  }
+  .big-feature-visual:hover {
+    transform: scale(1.02);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  }
+  .big-feature-visual img { width: 100%; height: auto; }
+
+  /* PRIVACY SECTION */
+  .privacy-section { text-align: center; }
+  .privacy-section > .container {
+    background: var(--bg-2); border: 1px solid var(--border); border-radius: 24px;
+    padding: 72px 48px;
+  }
+  .privacy-icon {
+    width: 64px; height: 64px; margin: 0 auto 24px;
+    background: var(--green-dim); border: 1px solid var(--green-border);
+    border-radius: 16px; display: flex; align-items: center; justify-content: center;
+  }
+  .privacy-icon svg { width: 28px; height: 28px; color: var(--green); }
+  .privacy-section h2 {
+    font-size: clamp(26px, 4vw, 38px); font-weight: 800;
+    letter-spacing: -0.8px; margin-bottom: 16px;
+  }
+  .privacy-section > .container > p { color: var(--text-3); font-size: 17px; max-width: 520px; margin: 0 auto 36px; line-height: 1.7; }
+  .privacy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; text-align: left; margin-top: 40px; }
+  .privacy-card {
+    background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 24px; transition: border-color 0.3s, transform 0.3s;
+  }
+  .privacy-card:hover { border-color: var(--green-border); transform: translateY(-2px); }
+  .privacy-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .privacy-card p { font-size: 13px; color: var(--text-3); margin: 0; line-height: 1.6; }
+
+  /* STATS */
+  .catalog-stats {
+    display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap;
+    margin-top: 40px;
+  }
+  .stat { text-align: center; }
+  .stat-number {
+    font-size: clamp(32px, 5vw, 48px); font-weight: 900;
+    color: var(--green); letter-spacing: -1px;
+  }
+  .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 4px; }
+
+  /* CTA */
+  .cta-section { text-align: center; padding: 120px 0; }
+  .cta-section h2 {
+    font-size: clamp(30px, 5vw, 48px); font-weight: 900;
+    letter-spacing: -1.5px; margin-bottom: 20px;
+    background: linear-gradient(to right, var(--text), var(--green-bright));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .cta-section p { color: var(--text-3); font-size: 17px; margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; }
+
+  /* FOOTER */
+  .footer { border-top: 1px solid var(--border); padding: 40px 0; }
+  .footer-inner {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+  }
+  .footer-brand { display: flex; align-items: center; gap: 10px; }
+  .footer-brand img { width: 24px; height: 24px; border-radius: 6px; }
+  .footer-brand span { font-size: 14px; font-weight: 600; color: var(--text-3); }
+  .footer-links { display: flex; align-items: center; gap: 24px; }
+  .footer-links a { font-size: 13px; color: var(--text-muted); font-weight: 500; transition: color 0.15s; }
+  .footer-links a:hover { color: var(--text-2); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .big-feature { grid-template-columns: 1fr; gap: 40px; }
+    .big-feature--reverse { direction: ltr; }
+    .showcase-grid { grid-template-columns: repeat(2, 1fr); }
+    .privacy-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .section { padding: 72px 0; }
+    .hero { padding: 120px 0 60px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .showcase-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; background: rgba(10,10,10,0.95); border-bottom: 1px solid var(--border); padding: 20px 24px; gap: 16px; }
+    .nav-links.open { display: flex; }
+    .nav-mobile-toggle { display: block; }
+    .catalog-stats { gap: 32px; }
+    .privacy-section > .container { padding: 48px 24px; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .trust-bar { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">
+      <img src="sources/logo.png" alt="GymPal" class="nav-logo">
+      <span class="nav-name">GymPal</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#features" data-t="nav_features">Features</a>
+      <a href="#privacy" data-t="nav_privacy">Privacy</a>
+      <a href="roadmap.html" data-t="nav_roadmap">Roadmap</a>
+      <div class="lang-switch">
+        <button class="lang-btn active" id="langEn" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="langIt" onclick="setLang('it')">IT</button>
+      </div>
+      <a href="https://play.google.com/store/apps/details?id=com.gympal.gympal" class="nav-cta">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M3 20.5v-17c0-.83.52-1.28 1.02-1.42l9.37 9.37-9.37 9.37c-.5-.14-1.02-.59-1.02-1.32zm13.54-5.09L5.66 21.17l8.54-8.54 2.34 2.78zm1.62-1.66L7.56 7.77l10.02 5.77-.42.21zM5.66 2.83l10.88 5.76-2.34 2.78L5.66 2.83z"/></svg>
+        <span data-t="nav_cta">Google Play</span>
+      </a>
+    </div>
+    <button class="nav-mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge hero-animated">
+      <span class="hero-badge-dot"></span>
+      <span data-t="hero_badge">Available on Google Play</span>
+    </div>
+    <h1 class="hero-animated-2" data-t="hero_title">Your training.<br>Nothing else in the way.</h1>
+    <p class="hero-animated-3" data-t="hero_subtitle">GymPal is the workout tracker that respects your time, your data, and your wallet. No accounts. No cloud. Just you and your progress.</p>
+    <div class="hero-actions hero-animated-4">
+      <a href="https://play.google.com/store/apps/details?id=com.gympal.gympal" class="btn-primary">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M3 20.5v-17c0-.83.52-1.28 1.02-1.42l9.37 9.37-9.37 9.37c-.5-.14-1.02-.59-1.02-1.32zm13.54-5.09L5.66 21.17l8.54-8.54 2.34 2.78zm1.62-1.66L7.56 7.77l10.02 5.77-.42.21zM5.66 2.83l10.88 5.76-2.34 2.78L5.66 2.83z"/></svg>
+        <span data-t="hero_cta">Download Free</span>
+      </a>
+      <a href="#features" class="btn-secondary" data-t="hero_cta2">See features</a>
+    </div>
+    <div class="trust-bar hero-animated-5">
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span data-t="trust_offline">100% offline</span>
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+        <span data-t="trust_noaccount">No account needed</span>
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3h-8v4h8V3z"/></svg>
+        <span data-t="trust_nosub">No subscription</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWCASE SCREENSHOTS -->
+<section class="showcase">
+  <div class="container">
+    <div class="showcase-grid">
+      <div class="showcase-item reveal reveal-delay-1">
+        <img src="sources/Train With Your Companion.png" alt="Train with your companion" loading="lazy">
+      </div>
+      <div class="showcase-item reveal reveal-delay-2">
+        <img src="sources/Keep A Logbook.png" alt="Keep a logbook of every session" loading="lazy">
+      </div>
+      <div class="showcase-item reveal reveal-delay-3">
+        <img src="sources/Track Your Progress.png" alt="Track your progress over time" loading="lazy">
+      </div>
+      <div class="showcase-item reveal reveal-delay-4">
+        <img src="sources/No Strings Attached.png" alt="No strings attached — your data stays on device" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="features-header reveal">
+      <p class="eyebrow" data-t="features_eyebrow">Features</p>
+      <h2 data-t="features_title">Everything you need.<br>Nothing you don't.</h2>
+      <p data-t="features_subtitle">Built for people who want a clean, focused, and effective way to track their training.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon feature-icon--green">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+        </div>
+        <h3 data-t="feat1_title">Workout Plans</h3>
+        <p data-t="feat1_desc">Create modular plans with named days. Reorder exercises, customize sets, reps, rest times, and notes per exercise.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon feature-icon--blue">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3 data-t="feat2_title">Live Training</h3>
+        <p data-t="feat2_desc">Start your session, see what you did last time, track each set as you go. Minimalist interface, zero friction.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon feature-icon--amber">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <h3 data-t="feat3_title">Session Notebook</h3>
+        <p data-t="feat3_desc">Full history of every workout. Edit past sessions, review performance, and keep a complete training logbook.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon feature-icon--purple">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h3 data-t="feat4_title">Progress Charts</h3>
+        <p data-t="feat4_desc">Estimated 1RM, max load, volume trends, session frequency, and muscle group distribution — all visualized.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon feature-icon--cyan">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20V10M6 20V4M18 20v-6"/></svg>
+        </div>
+        <h3 data-t="feat5_title">Personal Records</h3>
+        <p data-t="feat5_desc">Automatic PR tracking. Know when you hit a new best and see your records timeline evolve over time.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon feature-icon--rose">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <h3 data-t="feat6_title">Workout Insights</h3>
+        <p data-t="feat6_desc">Session summary after every training: volume comparison, improvements per exercise, streak tracking, and celebration.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BIG FEATURE: TRAINING -->
+<section class="container">
+  <div class="big-feature">
+    <div class="big-feature-content reveal-left">
+      <p class="eyebrow" data-t="bf1_eyebrow">Training</p>
+      <h2 data-t="bf1_title">Start training in seconds</h2>
+      <p data-t="bf1_desc">Pick your plan, choose the day, and go. GymPal pre-selects your next scheduled day so you can jump straight in.</p>
+      <ul class="big-feature-list">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span data-t="bf1_li1">Track reps, weight, time, distance, and holds</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span data-t="bf1_li2">See your last session's numbers as you train</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span data-t="bf1_li3">Free workout mode for unplanned sessions</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span data-t="bf1_li4">Supports metric and imperial units</span>
+        </li>
+      </ul>
+    </div>
+    <div class="big-feature-visual reveal-right">
+      <img src="sources/Train With Your Companion.png" alt="GymPal live training interface">
+    </div>
+  </div>
+</section>
+
+<!-- BIG FEATURE: LOGBOOK -->
+<section class="container">
+  <div class="big-feature big-feature--reverse">
+    <div class="big-feature-content reveal-right">
+      <p class="eyebrow" data-t="bf2_eyebrow">Logbook</p>
+      <h2 data-t="bf2_title">Every rep, every session,<br>always accessible</h2>
+      <p data-t="bf2_desc">Your complete training history in one place. Tap any session to see the full breakdown — or edit it if you need to.</p>
+      <ul class="big-feature-list">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span data-t="bf2_li1">Full per-set detail for every session</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span data-t="bf2_li2">Edit sessions after the fact</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span data-t="bf2_li3">Duration, date, and plan association</span>
+        </li>
+      </ul>
+    </div>
+    <div class="big-feature-visual reveal-left">
+      <img src="sources/Keep A Logbook.png" alt="GymPal session logbook">
+    </div>
+  </div>
+</section>
+
+<!-- BIG FEATURE: PROGRESS -->
+<section class="container">
+  <div class="big-feature">
+    <div class="big-feature-content reveal-left">
+      <p class="eyebrow" data-t="bf3_eyebrow">Progress</p>
+      <h2 data-t="bf3_title">See how far you've come</h2>
+      <p data-t="bf3_desc">Visualize your training with detailed charts. Track estimated 1RM, weekly volume by muscle group, and long-term trends.</p>
+      <ul class="big-feature-list">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span data-t="bf3_li1">Estimated 1RM and max load charts</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span data-t="bf3_li2">Weekly muscle volume stacked bars</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span data-t="bf3_li3">Session frequency and timing insights</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span data-t="bf3_li4">Per-exercise progression with date filters</span>
+        </li>
+      </ul>
+    </div>
+    <div class="big-feature-visual reveal-right">
+      <img src="sources/Track Your Progress.png" alt="GymPal progress charts">
+    </div>
+  </div>
+</section>
+
+<!-- EXERCISE CATALOG -->
+<section class="section" id="catalog">
+  <div class="container">
+    <div class="features-header reveal">
+      <p class="eyebrow" data-t="catalog_eyebrow">Exercise Catalog</p>
+      <h2 data-t="catalog_title">800+ exercises, ready to use</h2>
+      <p data-t="catalog_subtitle">An extensive library with detailed guides, muscle targets, and equipment info. Create custom exercises for your personal needs.</p>
+    </div>
+    <div class="catalog-stats reveal">
+      <div class="stat">
+        <div class="stat-number">873</div>
+        <div class="stat-label" data-t="stat1">Built-in exercises</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">6</div>
+        <div class="stat-label" data-t="stat2">Tracking modes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">17</div>
+        <div class="stat-label" data-t="stat3">Muscle targets</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">&infin;</div>
+        <div class="stat-label" data-t="stat4">Custom exercises</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIVACY -->
+<section class="section--sm" id="privacy">
+  <div class="container privacy-section">
+    <div class="container reveal">
+      <div class="privacy-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 data-t="privacy_title">Your data stays with you</h2>
+      <p data-t="privacy_subtitle">GymPal is built on a simple principle: your workout data belongs to you and only you. No cloud, no accounts, no tracking.</p>
+      <div class="privacy-grid">
+        <div class="privacy-card reveal reveal-delay-1">
+          <h4 data-t="priv1_title">100% On-Device</h4>
+          <p data-t="priv1_desc">All data stored locally in SQLite. Nothing ever leaves your phone unless you explicitly export it.</p>
+        </div>
+        <div class="privacy-card reveal reveal-delay-2">
+          <h4 data-t="priv2_title">No Account Required</h4>
+          <p data-t="priv2_desc">No sign-up, no email, no password. Open the app and start training immediately.</p>
+        </div>
+        <div class="privacy-card reveal reveal-delay-3">
+          <h4 data-t="priv3_title">No Tracking</h4>
+          <p data-t="priv3_desc">No analytics on your behavior, no ad networks, no third-party SDKs watching what you do.</p>
+        </div>
+      </div>
+      <div style="margin-top: 32px;">
+        <a href="index.html" class="btn-secondary" style="display: inline-flex;" data-t="privacy_link">Read Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADDITIONAL FEATURES -->
+<section class="section">
+  <div class="container">
+    <div class="features-header reveal">
+      <p class="eyebrow" data-t="more_eyebrow">And more</p>
+      <h2 data-t="more_title">Designed around real training</h2>
+      <p data-t="more_subtitle">Details that matter when you're in the gym.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon feature-icon--green">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <h3 data-t="more1_title">Modular Days</h3>
+        <p data-t="more1_desc">Name your training days however you want. Reorder them, add or remove exercises — your plan, your structure.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon feature-icon--blue">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        </div>
+        <h3 data-t="more2_title">Backup & Export</h3>
+        <p data-t="more2_desc">Full JSON backup and restore. Export individual plans to share with friends or move between devices.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon feature-icon--amber">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M3 12h18"/></svg>
+        </div>
+        <h3 data-t="more3_title">Custom Exercises</h3>
+        <p data-t="more3_desc">Create exercises for your specific needs. Choose tracking mode, set per-side support, and keep your catalog personal.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon feature-icon--purple">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68 1.65 1.65 0 0010 3.17V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        </div>
+        <h3 data-t="more4_title">Smart Defaults</h3>
+        <p data-t="more4_desc">Auto-selects your next training day. Remembers unit preferences. Adapts to your rhythm without configuration.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon feature-icon--cyan">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <h3 data-t="more5_title">Exercise Detail</h3>
+        <p data-t="more5_desc">Image carousel, muscle targets, equipment info, and step-by-step instructions for proper execution form.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon feature-icon--rose">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3 data-t="more6_title">Bilingual</h3>
+        <p data-t="more6_desc">Full English and Italian support throughout the app. Switch languages effortlessly from settings.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section--sm">
+  <div class="container" style="text-align: center;">
+    <div class="features-header reveal">
+      <p class="eyebrow" data-t="pricing_eyebrow">Pricing</p>
+      <h2 data-t="pricing_title">Free forever. Pro when you want it.</h2>
+      <p data-t="pricing_subtitle">Core tracking is completely free with no limits. Unlock progress charts and advanced analytics with a single one-time purchase — no subscription, ever.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container reveal">
+    <h2 data-t="cta_title">Start tracking today</h2>
+    <p data-t="cta_subtitle">No account. No setup. Just open and train.</p>
+    <a href="https://play.google.com/store/apps/details?id=com.gympal.gympal" class="btn-primary">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M3 20.5v-17c0-.83.52-1.28 1.02-1.42l9.37 9.37-9.37 9.37c-.5-.14-1.02-.59-1.02-1.32zm13.54-5.09L5.66 21.17l8.54-8.54 2.34 2.78zm1.62-1.66L7.56 7.77l10.02 5.77-.42.21zM5.66 2.83l10.88 5.76-2.34 2.78L5.66 2.83z"/></svg>
+      <span data-t="cta_btn">Get GymPal on Google Play</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="sources/logo.png" alt="GymPal">
+        <span>GymPal &copy; 2026</span>
+      </div>
+      <div class="footer-links">
+        <a href="index.html" data-t="footer_privacy">Privacy Policy</a>
+        <a href="roadmap.html" data-t="footer_roadmap">Roadmap</a>
+        <a href="mailto:cordellasandrodev9@proton.me" data-t="footer_contact">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const translations = {
+  en: {
+    nav_features: 'Features',
+    nav_privacy: 'Privacy',
+    nav_roadmap: 'Roadmap',
+    nav_cta: 'Google Play',
+    hero_badge: 'Available on Google Play',
+    hero_title: 'Your training.<br>Nothing else in the way.',
+    hero_subtitle: 'GymPal is the workout tracker that respects your time, your data, and your wallet. No accounts. No cloud. Just you and your progress.',
+    hero_cta: 'Download Free',
+    hero_cta2: 'See features',
+    trust_offline: '100% offline',
+    trust_noaccount: 'No account needed',
+    trust_nosub: 'No subscription',
+    features_eyebrow: 'Features',
+    features_title: 'Everything you need.<br>Nothing you don\'t.',
+    features_subtitle: 'Built for people who want a clean, focused, and effective way to track their training.',
+    feat1_title: 'Workout Plans',
+    feat1_desc: 'Create modular plans with named days. Reorder exercises, customize sets, reps, rest times, and notes per exercise.',
+    feat2_title: 'Live Training',
+    feat2_desc: 'Start your session, see what you did last time, track each set as you go. Minimalist interface, zero friction.',
+    feat3_title: 'Session Notebook',
+    feat3_desc: 'Full history of every workout. Edit past sessions, review performance, and keep a complete training logbook.',
+    feat4_title: 'Progress Charts',
+    feat4_desc: 'Estimated 1RM, max load, volume trends, session frequency, and muscle group distribution — all visualized.',
+    feat5_title: 'Personal Records',
+    feat5_desc: 'Automatic PR tracking. Know when you hit a new best and see your records timeline evolve over time.',
+    feat6_title: 'Workout Insights',
+    feat6_desc: 'Session summary after every training: volume comparison, improvements per exercise, streak tracking, and celebration.',
+    bf1_eyebrow: 'Training',
+    bf1_title: 'Start training in seconds',
+    bf1_desc: 'Pick your plan, choose the day, and go. GymPal pre-selects your next scheduled day so you can jump straight in.',
+    bf1_li1: 'Track reps, weight, time, distance, and holds',
+    bf1_li2: 'See your last session\'s numbers as you train',
+    bf1_li3: 'Free workout mode for unplanned sessions',
+    bf1_li4: 'Supports metric and imperial units',
+    bf2_eyebrow: 'Logbook',
+    bf2_title: 'Every rep, every session,<br>always accessible',
+    bf2_desc: 'Your complete training history in one place. Tap any session to see the full breakdown — or edit it if you need to.',
+    bf2_li1: 'Full per-set detail for every session',
+    bf2_li2: 'Edit sessions after the fact',
+    bf2_li3: 'Duration, date, and plan association',
+    bf3_eyebrow: 'Progress',
+    bf3_title: 'See how far you\'ve come',
+    bf3_desc: 'Visualize your training with detailed charts. Track estimated 1RM, weekly volume by muscle group, and long-term trends.',
+    bf3_li1: 'Estimated 1RM and max load charts',
+    bf3_li2: 'Weekly muscle volume stacked bars',
+    bf3_li3: 'Session frequency and timing insights',
+    bf3_li4: 'Per-exercise progression with date filters',
+    catalog_eyebrow: 'Exercise Catalog',
+    catalog_title: '800+ exercises, ready to use',
+    catalog_subtitle: 'An extensive library with detailed guides, muscle targets, and equipment info. Create custom exercises for your personal needs.',
+    stat1: 'Built-in exercises',
+    stat2: 'Tracking modes',
+    stat3: 'Muscle targets',
+    stat4: 'Custom exercises',
+    privacy_title: 'Your data stays with you',
+    privacy_subtitle: 'GymPal is built on a simple principle: your workout data belongs to you and only you. No cloud, no accounts, no tracking.',
+    priv1_title: '100% On-Device',
+    priv1_desc: 'All data stored locally in SQLite. Nothing ever leaves your phone unless you explicitly export it.',
+    priv2_title: 'No Account Required',
+    priv2_desc: 'No sign-up, no email, no password. Open the app and start training immediately.',
+    priv3_title: 'No Tracking',
+    priv3_desc: 'No analytics on your behavior, no ad networks, no third-party SDKs watching what you do.',
+    privacy_link: 'Read Privacy Policy',
+    more_eyebrow: 'And more',
+    more_title: 'Designed around real training',
+    more_subtitle: 'Details that matter when you\'re in the gym.',
+    more1_title: 'Modular Days',
+    more1_desc: 'Name your training days however you want. Reorder them, add or remove exercises — your plan, your structure.',
+    more2_title: 'Backup & Export',
+    more2_desc: 'Full JSON backup and restore. Export individual plans to share with friends or move between devices.',
+    more3_title: 'Custom Exercises',
+    more3_desc: 'Create exercises for your specific needs. Choose tracking mode, set per-side support, and keep your catalog personal.',
+    more4_title: 'Smart Defaults',
+    more4_desc: 'Auto-selects your next training day. Remembers unit preferences. Adapts to your rhythm without configuration.',
+    more5_title: 'Exercise Detail',
+    more5_desc: 'Image carousel, muscle targets, equipment info, and step-by-step instructions for proper execution form.',
+    more6_title: 'Bilingual',
+    more6_desc: 'Full English and Italian support throughout the app. Switch languages effortlessly from settings.',
+    pricing_eyebrow: 'Pricing',
+    pricing_title: 'Free forever. Pro when you want it.',
+    pricing_subtitle: 'Core tracking is completely free with no limits. Unlock progress charts and advanced analytics with a single one-time purchase — no subscription, ever.',
+    cta_title: 'Start tracking today',
+    cta_subtitle: 'No account. No setup. Just open and train.',
+    cta_btn: 'Get GymPal on Google Play',
+    footer_privacy: 'Privacy Policy',
+    footer_roadmap: 'Roadmap',
+    footer_contact: 'Contact'
+  },
+  it: {
+    nav_features: 'Funzionalità',
+    nav_privacy: 'Privacy',
+    nav_roadmap: 'Roadmap',
+    nav_cta: 'Google Play',
+    hero_badge: 'Disponibile su Google Play',
+    hero_title: 'Il tuo allenamento.<br>Nient\'altro in mezzo.',
+    hero_subtitle: 'GymPal è il workout tracker che rispetta il tuo tempo, i tuoi dati e il tuo portafoglio. Nessun account. Nessun cloud. Solo tu e i tuoi progressi.',
+    hero_cta: 'Scarica gratis',
+    hero_cta2: 'Scopri le funzionalità',
+    trust_offline: '100% offline',
+    trust_noaccount: 'Nessun account',
+    trust_nosub: 'Nessun abbonamento',
+    features_eyebrow: 'Funzionalità',
+    features_title: 'Tutto ciò che serve.<br>Nient\'altro.',
+    features_subtitle: 'Pensato per chi vuole un modo pulito, focalizzato ed efficace per tracciare i propri allenamenti.',
+    feat1_title: 'Schede di allenamento',
+    feat1_desc: 'Crea schede modulari con giorni personalizzati. Riordina gli esercizi, personalizza serie, ripetizioni, tempi di recupero e note.',
+    feat2_title: 'Allenamento live',
+    feat2_desc: 'Inizia la sessione, vedi cosa hai fatto l\'ultima volta, traccia ogni serie al momento. Interfaccia minimale, zero frizioni.',
+    feat3_title: 'Diario sessioni',
+    feat3_desc: 'Lo storico completo di ogni allenamento. Modifica sessioni passate, rivedi le performance e tieni un diario completo.',
+    feat4_title: 'Grafici progressi',
+    feat4_desc: '1RM stimato, carico massimo, trend di volume, frequenza sessioni e distribuzione gruppi muscolari — tutto visualizzato.',
+    feat5_title: 'Record personali',
+    feat5_desc: 'Tracciamento automatico dei PR. Scopri quando superi un massimo e vedi la timeline dei tuoi record.',
+    feat6_title: 'Riepilogo allenamento',
+    feat6_desc: 'Riepilogo dopo ogni sessione: confronto volume, miglioramenti per esercizio, tracking della streak e celebrazione.',
+    bf1_eyebrow: 'Allenamento',
+    bf1_title: 'Inizia in pochi secondi',
+    bf1_desc: 'Scegli la scheda, seleziona il giorno e vai. GymPal pre-seleziona il prossimo giorno programmato così puoi partire subito.',
+    bf1_li1: 'Traccia ripetizioni, peso, tempo, distanza e tenute',
+    bf1_li2: 'Vedi i numeri della sessione precedente mentre ti alleni',
+    bf1_li3: 'Modalità allenamento libero per sessioni non pianificate',
+    bf1_li4: 'Supporto per unità metriche e imperiali',
+    bf2_eyebrow: 'Diario',
+    bf2_title: 'Ogni ripetizione, ogni sessione,<br>sempre accessibile',
+    bf2_desc: 'Il tuo storico di allenamento completo in un posto. Tocca una sessione per vedere tutti i dettagli — o modificala se necessario.',
+    bf2_li1: 'Dettaglio per-set di ogni sessione',
+    bf2_li2: 'Modifica le sessioni dopo averle concluse',
+    bf2_li3: 'Durata, data e associazione alla scheda',
+    bf3_eyebrow: 'Progressi',
+    bf3_title: 'Guarda quanta strada hai fatto',
+    bf3_desc: 'Visualizza i tuoi allenamenti con grafici dettagliati. Traccia 1RM stimato, volume settimanale per gruppo muscolare e trend a lungo termine.',
+    bf3_li1: 'Grafici 1RM stimato e carico massimo',
+    bf3_li2: 'Barre impilate del volume muscolare settimanale',
+    bf3_li3: 'Frequenza sessioni e distribuzione temporale',
+    bf3_li4: 'Progressione per esercizio con filtri data',
+    catalog_eyebrow: 'Catalogo esercizi',
+    catalog_title: '800+ esercizi, pronti all\'uso',
+    catalog_subtitle: 'Una libreria completa con guide dettagliate, muscoli target e info sull\'attrezzatura. Crea esercizi custom per le tue esigenze.',
+    stat1: 'Esercizi inclusi',
+    stat2: 'Modalità tracking',
+    stat3: 'Muscoli target',
+    stat4: 'Esercizi custom',
+    privacy_title: 'I tuoi dati restano con te',
+    privacy_subtitle: 'GymPal si basa su un principio semplice: i tuoi dati di allenamento appartengono a te e solo a te. Nessun cloud, nessun account, nessun tracking.',
+    priv1_title: '100% sul dispositivo',
+    priv1_desc: 'Tutti i dati salvati localmente in SQLite. Nulla lascia il tuo telefono a meno che tu non lo esporti esplicitamente.',
+    priv2_title: 'Nessun account necessario',
+    priv2_desc: 'Nessuna registrazione, nessuna email, nessuna password. Apri l\'app e inizia ad allenarti subito.',
+    priv3_title: 'Nessun tracciamento',
+    priv3_desc: 'Nessuna analisi del tuo comportamento, nessun network pubblicitario, nessun SDK di terze parti che ti osserva.',
+    privacy_link: 'Leggi la Privacy Policy',
+    more_eyebrow: 'E molto altro',
+    more_title: 'Progettato intorno all\'allenamento vero',
+    more_subtitle: 'Dettagli che contano quando sei in palestra.',
+    more1_title: 'Giorni modulari',
+    more1_desc: 'Dai ai tuoi giorni di allenamento il nome che vuoi. Riordinali, aggiungi o rimuovi esercizi — la tua scheda, la tua struttura.',
+    more2_title: 'Backup ed export',
+    more2_desc: 'Backup e ripristino completo in JSON. Esporta singole schede per condividerle con amici o trasferirle tra dispositivi.',
+    more3_title: 'Esercizi custom',
+    more3_desc: 'Crea esercizi per le tue esigenze specifiche. Scegli la modalità di tracking, imposta il supporto per-lato.',
+    more4_title: 'Default intelligenti',
+    more4_desc: 'Pre-seleziona il prossimo giorno di allenamento. Ricorda le preferenze di unità. Si adatta al tuo ritmo senza configurazione.',
+    more5_title: 'Dettaglio esercizio',
+    more5_desc: 'Carosello immagini, muscoli target, info attrezzatura e istruzioni passo-passo per la corretta esecuzione.',
+    more6_title: 'Bilingue',
+    more6_desc: 'Supporto completo per inglese e italiano in tutta l\'app. Cambia lingua facilmente dalle impostazioni.',
+    pricing_eyebrow: 'Prezzi',
+    pricing_title: 'Gratis per sempre. Pro quando vuoi.',
+    pricing_subtitle: 'Il tracking base è completamente gratuito senza limiti. Sblocca grafici di progresso e analytics avanzate con un singolo acquisto una tantum — nessun abbonamento, mai.',
+    cta_title: 'Inizia a tracciare oggi',
+    cta_subtitle: 'Nessun account. Nessuna configurazione. Apri e allenati.',
+    cta_btn: 'Scarica GymPal su Google Play',
+    footer_privacy: 'Privacy Policy',
+    footer_roadmap: 'Roadmap',
+    footer_contact: 'Contatti'
+  }
+};
+
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.getElementById('langEn').classList.toggle('active', lang === 'en');
+  document.getElementById('langIt').classList.toggle('active', lang === 'it');
+
+  const t = translations[lang];
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.getAttribute('data-t');
+    if (t[key]) el.innerHTML = t[key];
+  });
+
+  const url = new URL(window.location);
+  if (lang === 'en') {
+    url.searchParams.delete('lang');
+  } else {
+    url.searchParams.set('lang', lang);
+  }
+  window.history.replaceState({}, '', url);
+}
+
+// Scroll reveal with IntersectionObserver
+const revealElements = document.querySelectorAll('.reveal, .reveal-scale, .reveal-left, .reveal-right');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+revealElements.forEach(el => observer.observe(el));
+
+// Init language from URL
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const lang = params.get('lang');
+  if (lang === 'it') {
+    setLang('it');
+  }
+})();
+</script>
+
+</body>
+</html>
